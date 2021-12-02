@@ -20,6 +20,12 @@ testTwo arr =
       actual = Two.solve1 arr
    in actual `shouldBe` expected
 
+testTwoTwo :: [Two.Inst] -> IO ()
+testTwoTwo arr =
+  let expected = 900
+      actual = Two.solve2 arr
+   in actual `shouldBe` expected
+
 main :: IO ()
 main = hspec do
   describe "Utility Tests" do
@@ -48,3 +54,10 @@ main = hspec do
           Right t -> do
             let parsedInput = rights $ parse Two.parseInst "" <$> t
             testTwo parsedInput
+      it "should return 900" $ do
+        input <- getInput "src/Two/test.txt"
+        case input of
+          Left ue -> error $ show ue
+          Right t -> do
+            let parsedInput = rights $ parse Two.parseInst "" <$> t
+            testTwoTwo parsedInput

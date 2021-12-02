@@ -33,3 +33,14 @@ solve1 arr =
       Forward n -> (x + n, y)
       Down n -> (x, y + n)
       Up n -> (x, y - n)
+
+solve2 :: [Inst] -> Int
+solve2 arr =
+  let (x, y, _) = foldl' f (0, 0, 0) arr
+   in x * y
+  where
+    f :: (Int, Int, Int) -> Inst -> (Int, Int, Int)
+    f (x, y, aim) cur = case cur of
+      Forward n -> (x + n, y + aim * n, aim)
+      Down n -> (x, y, aim + n)
+      Up n -> (x, y, aim - n)
