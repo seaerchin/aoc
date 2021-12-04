@@ -1,7 +1,6 @@
 module Two.Data where
 
 import Data.Char (digitToInt)
-import Flow
 import RIO hiding (Down)
 import Text.Parsec.Char as P
 import Text.Parsec.Text (Parser)

@@ -3,6 +3,7 @@ import qualified One.Data as One
 import RIO
 import Test.Hspec
 import Text.Parsec (parse)
+import qualified Three.Data as Three
 import qualified Two.Data as Two
 
 -- | Test for part 1, to ensure that the test case provided is correct
@@ -24,6 +25,12 @@ testTwoTwo :: [Two.Inst] -> IO ()
 testTwoTwo arr =
   let expected = 900
       actual = Two.solve2 arr
+   in actual `shouldBe` expected
+
+testThree :: [Text] -> IO ()
+testThree arr =
+  let expected = 198
+      actual = Three.solve1 arr
    in actual `shouldBe` expected
 
 main :: IO ()
@@ -61,3 +68,18 @@ main = hspec do
           Right t -> do
             let parsedInput = rights $ parse Two.parseInst "" <$> t
             testTwoTwo parsedInput
+    describe "Day 3" do
+      it "should return 198" $ do
+        input <- getInput "src/Three/test.txt"
+        case input of
+          Left ue -> error $ show ue
+          Right txt -> do
+            testThree txt
+      it "should return 230" $ do
+        input <- getInput "src/Three/test.txt"
+        case input of
+          Left ue -> error $ show ue
+          Right txt -> do
+            let expected = 230
+                actual = Three.solve2 txt
+            actual `shouldBe` expected
