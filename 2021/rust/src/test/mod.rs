@@ -1,3 +1,6 @@
+use super::three;
+use super::util;
+
 #[test]
 fn test_read_file() {
     let expected: Vec<String> = vec!["some", "data"]
@@ -41,3 +44,19 @@ fn test_two_two() {
     let actual = crate::two::part2(data);
     assert_eq!(expected, actual);
 }
+
+#[test]
+fn test_3() {
+    let data = util::read_file("src/three/test.txt")
+        .iter()
+        .map(|s| {
+            s.chars()
+                .map(|c| if c == '1' { true } else { false })
+                .collect::<Vec<bool>>()
+        })
+        .collect();
+    let expected = 198;
+    let actual = three::part1(data);
+    assert_eq!(expected, actual)
+}
+
