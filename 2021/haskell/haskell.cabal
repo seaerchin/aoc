@@ -27,6 +27,7 @@ library
   exposed-modules:
       Lib
       One.Data
+      Three.Data
       Two.Data
   other-modules:
       Paths_haskell
