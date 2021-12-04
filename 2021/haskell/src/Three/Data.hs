@@ -2,6 +2,7 @@ module Three.Data where
 
 import Data.Foldable (length)
 import Data.Text (count, head, index)
+import qualified Debug.Trace as Debug
 import Flow
 import RIO hiding (length)
 import qualified RIO.List.Partial as List (head)
@@ -20,7 +21,7 @@ mostCommon :: Text -> Text
 mostCommon cols =
   let ones = singleton '1'
       zeroes = singleton '0'
-   in if count ones cols > count zeroes cols then ones else zeroes
+   in if count ones cols >= count zeroes cols then ones else zeroes
 
 leastCommon :: Text -> Text
 leastCommon cols =
@@ -49,7 +50,7 @@ recurse filterFunc sub idx =
   if length sub == 1
     then List.head sub
     else
-      let mcc = filterFunc $ extractCols sub idx
+      let mcc = filterFunc $ extractCols (transpose sub) idx
           filtered = filter (\t -> index t (fromInteger idx) == head mcc) sub
        in recurse filterFunc filtered (idx + 1)
 
