@@ -1,10 +1,9 @@
 use std::fs;
 
 pub fn read_file(path: &str) -> Vec<String> {
-    let data = fs::read_to_string(path)
-        .map(|ref s| s.trim().to_owned())
-        .expect("Please ensure the path is correct and the file exists!");
-    data.split("\n").map(|s| s.to_owned()).collect()
+    fs::read_to_string(path)
+        .map(|ref s| s.trim().split("\n").map(|s| s.to_owned()).collect())
+        .expect("Please ensure the path is correct and the file exists!")
 }
 
 pub fn parse_int(v: Vec<String>) -> Vec<i32> {

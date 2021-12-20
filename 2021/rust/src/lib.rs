@@ -1,3 +1,4 @@
+pub mod four;
 pub mod one;
 mod test;
 pub mod three;
