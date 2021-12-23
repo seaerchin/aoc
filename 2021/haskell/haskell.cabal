@@ -28,6 +28,7 @@ library
       Five.Data
       Lib
       One.Data
+      Six.Data
       Three.Data
       Two.Data
   other-modules:
