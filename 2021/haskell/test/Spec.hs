@@ -1,13 +1,12 @@
-import Data.List (head)
-import Data.Text (splitOn, unpack)
+import Data.Text (unpack)
 import qualified Five.Data as Five
 import Lib
 import qualified One.Data as One
 import RIO
+import qualified Seven.Data as Seven
 import qualified Six.Data as Six
 import Test.Hspec
 import Text.Parsec (parse)
-import Text.Read (read)
 import qualified Three.Data as Three
 import qualified Two.Data as Two
 
@@ -115,4 +114,9 @@ main = hspec do
       it "should return 26984457539" $ do
         let expected = 26984457539
             actual = Six.solve1 256 [3, 4, 3, 1, 2]
+        actual `shouldBe` expected
+    describe "Day 7" do
+      it "should return 37" $ do
+        let expected = 37
+            actual = Seven.solve1 [16, 1, 2, 0, 4, 2, 7, 1, 2, 14]
         actual `shouldBe` expected
