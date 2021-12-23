@@ -1,3 +1,5 @@
+use crate::four;
+
 use super::three;
 use super::util;
 
@@ -60,3 +62,51 @@ fn test_3() {
     assert_eq!(expected, actual)
 }
 
+#[test]
+fn test_4() {
+    let arr = util::read_file("src/four/test.txt");
+    let (values, boards) = arr.split_at(1);
+
+    let values = values[0]
+        .split(',')
+        .map(|x| str::parse::<i32>(x).unwrap())
+        .collect();
+
+    println!("{:?}", boards);
+
+    let boards: Vec<four::Board> = boards
+        .to_vec()
+        .iter()
+        .map(|v| {
+            v.trim()
+                .split(' ')
+                .map(|x| {
+                    println!("{}", x);
+                    str::parse::<i32>(x).unwrap()
+                })
+                .collect()
+        })
+        .fold(
+            Vec::default(),
+            |mut prev: Vec<Vec<Vec<i32>>>, cur: Vec<i32>| match prev.pop() {
+                Some(mut last) => {
+                    if last.len() < 5 {
+                        last.push(cur.to_owned());
+                        prev.push(last);
+                    } else {
+                        prev.push(last);
+                        prev.push(Vec::default());
+                    }
+                    prev
+                }
+                None => {
+                    vec![vec![cur.to_owned()]]
+                }
+            },
+        )
+        .iter()
+        .map(|bingo| four::Board::new(bingo))
+        .collect();
+
+    assert_eq!(four::part1(values, boards), 4512);
+}
