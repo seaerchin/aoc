@@ -1,10 +1,13 @@
-import Data.Text (unpack)
+import Data.List (head)
+import Data.Text (splitOn, unpack)
 import qualified Five.Data as Five
 import Lib
 import qualified One.Data as One
 import RIO
+import qualified Six.Data as Six
 import Test.Hspec
 import Text.Parsec (parse)
+import Text.Read (read)
 import qualified Three.Data as Three
 import qualified Two.Data as Two
 
@@ -96,7 +99,7 @@ main = hspec do
                 actual = Five.solve1 parsed
             actual `shouldBe` expected
       it "should return 12" $ do
-        input <- getInput "src/Five/data.txt"
+        input <- getInput "src/Five/test.txt"
         case input of
           Left ue -> error $ show ue
           Right txt -> do
@@ -104,3 +107,8 @@ main = hspec do
                 parsed = Five.parseInst (fmap unpack txt)
                 actual = Five.solve2 parsed
             actual `shouldBe` expected
+    describe "Day 6" do
+      it "should return 5934" $ do
+        let expected = 5934
+            actual = Six.solve1 80 [3, 4, 3, 1, 2]
+        actual `shouldBe` expected
