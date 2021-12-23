@@ -120,3 +120,7 @@ main = hspec do
         let expected = 37
             actual = Seven.solve1 [16, 1, 2, 0, 4, 2, 7, 1, 2, 14]
         actual `shouldBe` expected
+      it "should return 168" $ do
+        let expected = 168
+            actual = Seven.solve2 [16, 1, 2, 0, 4, 2, 7, 1, 2, 14]
+        actual `shouldBe` expected
