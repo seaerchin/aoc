@@ -112,3 +112,7 @@ main = hspec do
         let expected = 5934
             actual = Six.solve1 80 [3, 4, 3, 1, 2]
         actual `shouldBe` expected
+      it "should return 26984457539" $ do
+        let expected = 26984457539
+            actual = Six.solve1 256 [3, 4, 3, 1, 2]
+        actual `shouldBe` expected
