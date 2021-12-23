@@ -2,7 +2,6 @@ module Three.Data where
 
 import Data.Foldable (length)
 import Data.Text (count, head, index)
-import qualified Debug.Trace as Debug
 import Flow
 import RIO hiding (length)
 import qualified RIO.List.Partial as List (head)
