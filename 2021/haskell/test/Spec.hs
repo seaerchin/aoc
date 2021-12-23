@@ -1,3 +1,5 @@
+import Data.Text (unpack)
+import qualified Five.Data as Five
 import Lib
 import qualified One.Data as One
 import RIO
@@ -82,4 +84,23 @@ main = hspec do
           Right txt -> do
             let expected = 230
                 actual = Three.solve2 txt
+            actual `shouldBe` expected
+    describe "Day 5" do
+      it "should return 5" $ do
+        input <- getInput "src/Five/test.txt"
+        case input of
+          Left ue -> error $ show ue
+          Right txt -> do
+            let expected = 5
+                parsed = Five.parseInst (fmap unpack txt)
+                actual = Five.solve1 parsed
+            actual `shouldBe` expected
+      it "should return 12" $ do
+        input <- getInput "src/Five/data.txt"
+        case input of
+          Left ue -> error $ show ue
+          Right txt -> do
+            let expected = 12
+                parsed = Five.parseInst (fmap unpack txt)
+                actual = Five.solve2 parsed
             actual `shouldBe` expected

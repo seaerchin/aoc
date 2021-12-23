@@ -20,6 +20,8 @@ type Point a = (a, a)
 solve1 :: [(Point Int, Point Int)] -> Int
 solve1 = sum . toList . fmap (const 1) . M.filter (> 1) . foldr (flip updateMapWithList) mempty . expandMatrix . filter (\(a, b) -> not $ isDiagonalLine a b)
 
+solve2 :: [(Point Int, Point Int)] -> Int
+solve2 = sum . toList . fmap (const 1) . M.filter (> 1) . foldr (flip updateMapWithList) mempty . expandMatrix
 
 isDiagonalLine :: Point Int -> Point Int -> Bool
 isDiagonalLine (x1, y1) (x2, y2) = x1 /= x2 && y1 /= y2
@@ -64,11 +66,21 @@ expandMatrix = fmap expandPoints
     expandPoints (x@(x1, y1), y@(x2, y2)) = unfoldr f seed
       where
         isHorizontal = x1 /= x2 -- implies y1 == y2
+        isDiagonal = isDiagonalLine x y
         seed
           -- if it's diagonal, this will still work
           | not isHorizontal = if y1 > y2 then y else x
           | otherwise = if x1 > x2 then y else x
         other = if x == seed then y else x
         f (x, y)
+          | isDiagonal =
+            let (dx, dy) = getQuadrant seed other
+             in if (x - dx, y - dy) == other then Nothing else Just ((x, y), (x + dx, y + dy))
           | not isHorizontal = if y == snd other + 1 then Nothing else Just ((x, y), (x, y + 1))
           | otherwise = if x == fst other + 1 then Nothing else Just ((x, y), (x + 1, y))
+        getQuadrant :: Point Int -> Point Int -> Point Int
+        getQuadrant seed@(x1, y1) other@(x2, y2)
+          | x2 > x1 && y2 > y1 = (1, 1)
+          | x2 < x1 && y2 > y1 = (-1, 1)
+          | x2 < x1 && y2 < y1 = (-1, -1)
+          | otherwise = (1, -1)
