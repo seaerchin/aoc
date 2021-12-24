@@ -5,6 +5,10 @@ import RIO
 import RIO.ByteString (readFile)
 import qualified RIO.Text as Text
 
+type Matrix a = [[a]]
+
+type Point a = (a, a)
+
 -- getInput reads from a file path and returns the output as a list of strings
 getInput :: FilePath -> IO (Either UnicodeException [Text])
 getInput path =
@@ -17,3 +21,8 @@ getInput path =
 
 inputToInteger :: [Text] -> [Int]
 inputToInteger ls = rights $ fmap fst . decimal <$> ls
+
+-- guarantees that the result is successful
+unsafeUnwrap :: Show a => Either a b -> b
+unsafeUnwrap (Left a) = error ("you done goofed: " ++ show a)
+unsafeUnwrap (Right b) = b

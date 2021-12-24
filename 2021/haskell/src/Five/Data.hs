@@ -1,17 +1,13 @@
 module Five.Data where
 
 import Data.List (unfoldr)
-import Flow
+import Lib
 import RIO
 import RIO.Map ((!?))
 import qualified RIO.Map as M
 import RIO.Partial (read)
 import qualified Text.Parsec as P
 import Text.Parsec.String (Parser)
-
-type Matrix a = [[a]]
-
-type Point a = (a, a)
 
 -- parse instructions into a nested list of points that require updating
 -- take only horizontal/vertical lines
@@ -25,10 +21,6 @@ solve2 = sum . toList . fmap (const 1) . M.filter (> 1) . foldr (flip updateMapW
 
 isDiagonalLine :: Point Int -> Point Int -> Bool
 isDiagonalLine (x1, y1) (x2, y2) = x1 /= x2 && y1 /= y2
-
-unsafeUnwrap :: Show a => Either a b -> b
-unsafeUnwrap (Left a) = error ("you done goofed: " ++ show a)
-unsafeUnwrap (Right b) = b
 
 parseInst :: [String] -> [(Point Int, Point Int)]
 parseInst s =
