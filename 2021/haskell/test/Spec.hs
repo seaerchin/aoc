@@ -1,4 +1,5 @@
 import Data.Text (unpack)
+import qualified Eight.Data as Eight
 import qualified Five.Data as Five
 import Lib
 import qualified One.Data as One
@@ -124,3 +125,13 @@ main = hspec do
         let expected = 168
             actual = Seven.solve2 [16, 1, 2, 0, 4, 2, 7, 1, 2, 14]
         actual `shouldBe` expected
+    describe "Day 8" do
+      it "should return 26" $ do
+        input <- getInput "src/Eight/test.txt"
+        case input of
+          Left ue -> error $ show ue
+          Right txt -> do
+            let expected = 26
+                parsed = Eight.parseInput txt
+                actual = Eight.solve1 parsed
+            actual `shouldBe` expected
