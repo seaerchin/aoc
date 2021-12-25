@@ -135,3 +135,12 @@ main = hspec do
                 parsed = Eight.parseInput txt
                 actual = Eight.solve1 parsed
             actual `shouldBe` expected
+      it "should return 61229" $ do
+        input <- getInput "src/Eight/test.txt"
+        case input of
+          Left ue -> error $ show ue
+          Right txt -> do
+            let expected = 61229
+                parsed = Eight.parseFullInput txt
+                actual = Eight.solve2 parsed
+            actual `shouldBe` expected

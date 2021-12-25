@@ -4,6 +4,8 @@ import Data.Text.Read as Text (decimal)
 import RIO
 import RIO.ByteString (readFile)
 import qualified RIO.Text as Text
+import qualified Text.Parsec as P
+import Text.Parsec.Text (Parser)
 
 type Matrix a = [[a]]
 
@@ -26,3 +28,9 @@ inputToInteger ls = rights $ fmap fst . decimal <$> ls
 unsafeUnwrap :: Show a => Either a b -> b
 unsafeUnwrap (Left a) = error ("you done goofed: " ++ show a)
 unsafeUnwrap (Right b) = b
+
+withParser :: Parser a -> [Text] -> [a]
+withParser p = fmap (unsafeUnwrap . P.parse p "input stream")
+
+todo :: [Char] -> a
+todo = error
