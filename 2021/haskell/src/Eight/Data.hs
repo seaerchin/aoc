@@ -1,8 +1,9 @@
 module Eight.Data where
 
 import Data.List (groupBy, head, intersect, sort, splitAt, tail, union, (!!), (\\))
+import Data.Maybe (fromJust)
 import Data.Text (init, pack, splitOn, unpack)
-import qualified Data.Text as T (length)
+import qualified Data.Text as T (concat, length)
 import qualified Debug.Trace as Debug
 import Flow
 import Lib
@@ -118,6 +119,9 @@ fromRaw = todo "this converts a raw textual input like dag/7 into its segment re
 fromText :: Text -> Letter
 fromText = undefined
 
+toText :: Letter -> Text
+toText = undefined
+
 getNumber :: Text -> Either [Int] Int
 getNumber t
   | T.length t == 2 = Right 1
@@ -132,20 +136,32 @@ updateSegment index value segment =
   let (pre, suf) = splitAt index (extractList segment)
    in Segment $ pre ++ (value : if null suf then suf else tail suf)
 
--- TODO: change signatures to Unique -> Repeated -> Segment -> Segment
--- all the info we have now can be extracted from there
+zero :: [Text] -> [Text] -> Segment -> Segment
+zero unique _ =
+  let seven = head unique
+      one = unique !! 1
+   in updateSegment 0 (Just $ fromText $ seven \\\ one)
 
-zero :: Text -> Text -> Segment -> Segment
-zero one seven = updateSegment 0 (Just $ fromText $ seven \\\ one)
+oneThree :: [Text] -> [Text] -> Segment -> Segment
+oneThree unique repeated segment =
+  let seven = head unique
+      sixes = dropWhile (\x -> T.length x == 5) repeated
+      weird = foldr (.*.) (head sixes) (tail sixes)
+   in updateSegment 1 (Just . fromText $ (weird \\\ seven)) segment
+        |> updateSegment 3 (Just . fromText $ (seven \\\ weird))
 
-oneThree :: Text -> Text -> Segment -> Segment
-oneThree seven weird segment =
-  -- let weird = foldr (.*.) (head sixes) (tail sixes)
-  updateSegment 1 (Just . fromText $ (weird \\\ seven)) segment
-    |> updateSegment 3 (Just . fromText $ (seven \\\ weird))
+two :: [Text] -> [Text] -> Segment -> Segment
+two _ repeated segment =
+  let fives = takeWhile (\x -> T.length x == 5) repeated
+      intersectFives = foldr (.*.) (head fives) (tail fives)
+      sectionOne = extractList segment |> head |> fromJust
+   in updateSegment 2 (Just . fromText $ (intersectFives \\\ toText sectionOne)) segment
 
-six :: Text -> Text -> Segment -> Segment
-six seven cap = updateSegment 6 (Just $ fromText (seven \\\ cap))
+six :: [Text] -> [Text] -> Segment -> Segment
+six unique _ segment =
+  let seven = head unique
+      cap = extractList segment |> (\x -> [head x, x !! 1, x !! 2]) |> catMaybes |> fmap toText |> T.concat
+   in updateSegment 6 (Just $ fromText (seven \\\ cap)) segment
 
 -- to get position 4,
 -- we just fold across the texts with length 5 using an intersection (call this A)
